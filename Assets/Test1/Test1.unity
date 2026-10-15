@@ -646,11 +646,17 @@ MonoBehaviour:
   - {fileID: 1943682344}
   - {fileID: 1524461347}
   - {fileID: 1120435123}
+  particleSystem: {fileID: 0}
   frequencyFocusWindow: 16
   amplification: 512
   baseHeight: 0.0625
   fftWindow: 1
   useDecibels: 0
+  particleFrequencyMin: 80
+  particleFrequencyMax: 2000
+  particleAmplitudeThreshold: 0.01
+  particleBurstCount: 20
+  particleBurstCooldown: 0.15
   spectrumData: []
 --- !u!82 &75930587
 AudioSource:
@@ -3841,11 +3847,17 @@ MonoBehaviour:
   - {fileID: 822734668}
   - {fileID: 1688258075}
   - {fileID: 1544069612}
+  particleSystem: {fileID: 0}
   frequencyFocusWindow: 16
   amplification: 512
   baseHeight: 0.0625
   fftWindow: 1
   useDecibels: 0
+  particleFrequencyMin: 80
+  particleFrequencyMax: 2000
+  particleAmplitudeThreshold: 0.01
+  particleBurstCount: 20
+  particleBurstCooldown: 0.15
   spectrumData: []
 --- !u!82 &788252867
 AudioSource:
@@ -8731,7 +8743,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -8760,9 +8772,9 @@ ParticleSystem:
     enabled: 1
     startLifetime:
       serializedVersion: 3
-      minMaxState: 0
-      scalar: 5
-      minScalar: 5
+      minMaxState: 3
+      scalar: 7
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve: []
@@ -8777,9 +8789,9 @@ ParticleSystem:
         m_RotationOrder: 4
     startSpeed:
       serializedVersion: 3
-      minMaxState: 0
-      scalar: 5
-      minScalar: 5
+      minMaxState: 3
+      scalar: 4
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve: []
@@ -8859,8 +8871,8 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     startSize:
       serializedVersion: 3
-      minMaxState: 0
-      scalar: 1
+      minMaxState: 3
+      scalar: 2.5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -8876,7 +8888,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeY:
       serializedVersion: 3
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -8893,7 +8905,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 3
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -8961,7 +8973,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 0
-    maxNumParticles: 1000
+    maxNumParticles: 100
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -8985,15 +8997,15 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 4
-    angle: 80
+    type: 5
+    angle: 85.1
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
-    m_Rotation: {x: 0, y: 0, z: 0}
-    m_Scale: {x: 1, y: 1, z: 1}
+    m_Rotation: {x: 0, y: -20, z: 0}
+    m_Scale: {x: 7, y: 25, z: 1}
     placementMode: 0
     m_MeshMaterialIndex: 0
     m_MeshNormalOffset: 0
@@ -9032,11 +9044,11 @@ ParticleSystem:
     m_TextureColorAffectsParticles: 1
     m_TextureAlphaAffectsParticles: 1
     m_TextureBilinearFiltering: 0
-    randomDirectionAmount: 0
+    randomDirectionAmount: 0.5
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 1
+      value: 4.64
       mode: 0
       spread: 0
       speed:
@@ -9083,7 +9095,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 3
       minMaxState: 0
-      scalar: 10
+      scalar: 1
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -9114,8 +9126,30 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    m_BurstCount: 0
-    m_Bursts: []
+    m_BurstCount: 1
+    m_Bursts:
+    - serializedVersion: 2
+      time: 0
+      countCurve:
+        serializedVersion: 3
+        minMaxState: 0
+        scalar: 1
+        minScalar: 30
+        maxCurve:
+          serializedVersion: 2
+          m_Curve: []
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        minCurve:
+          serializedVersion: 2
+          m_Curve: []
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+      cycleCount: 1
+      repeatInterval: 0.01
+      probability: 1
   SizeModule:
     enabled: 0
     curve:
@@ -9388,8 +9422,8 @@ ParticleSystem:
         m_RotationOrder: 4
     startFrame:
       serializedVersion: 3
-      minMaxState: 0
-      scalar: 0
+      minMaxState: 3
+      scalar: 0.9999
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -9412,8 +9446,10 @@ ParticleSystem:
     uvChannelMask: -1
     rowMode: 1
     sprites:
-    - sprite: {fileID: -8838733784046698314, guid: 0c5b7e35c933848a0b1af25a61343fc7, type: 3}
-    - sprite: {fileID: -1436176735, guid: 0c5b7e35c933848a0b1af25a61343fc7, type: 3}
+    - sprite: {fileID: -8838733784046698314, guid: 1be1c9662277446cb94f9b177f018fc0, type: 3}
+    - sprite: {fileID: 1561522522, guid: 1be1c9662277446cb94f9b177f018fc0, type: 3}
+    - sprite: {fileID: -1128431072, guid: 1be1c9662277446cb94f9b177f018fc0, type: 3}
+    - sprite: {fileID: -115738227, guid: 1be1c9662277446cb94f9b177f018fc0, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:
@@ -11330,11 +11366,17 @@ MonoBehaviour:
   - {fileID: 2094840207}
   - {fileID: 976587748}
   - {fileID: 1083259191}
+  particleSystem: {fileID: 0}
   frequencyFocusWindow: 16
   amplification: 512
   baseHeight: 0.0625
   fftWindow: 1
   useDecibels: 0
+  particleFrequencyMin: 80
+  particleFrequencyMax: 2000
+  particleAmplitudeThreshold: 0.01
+  particleBurstCount: 20
+  particleBurstCooldown: 0.15
   spectrumData: []
 --- !u!82 &1564817251
 AudioSource:
@@ -11745,11 +11787,17 @@ MonoBehaviour:
   - {fileID: 1445787528}
   - {fileID: 974148802}
   - {fileID: 1385816450}
+  particleSystem: {fileID: 0}
   frequencyFocusWindow: 16
   amplification: 512
   baseHeight: 0.0625
   fftWindow: 1
   useDecibels: 0
+  particleFrequencyMin: 80
+  particleFrequencyMax: 2000
+  particleAmplitudeThreshold: 0.01
+  particleBurstCount: 20
+  particleBurstCooldown: 0.15
   spectrumData: []
 --- !u!82 &1610474719
 AudioSource:
@@ -11936,11 +11984,17 @@ MonoBehaviour:
   - {fileID: 1211438977}
   - {fileID: 1029756041}
   - {fileID: 1453521966}
+  particleSystem: {fileID: 0}
   frequencyFocusWindow: 16
   amplification: 512
   baseHeight: 0.0625
   fftWindow: 1
   useDecibels: 0
+  particleFrequencyMin: 80
+  particleFrequencyMax: 2000
+  particleAmplitudeThreshold: 0.01
+  particleBurstCount: 20
+  particleBurstCooldown: 0.15
   spectrumData: []
 --- !u!82 &1636811322
 AudioSource:
@@ -12768,11 +12822,17 @@ MonoBehaviour:
   - {fileID: 936578895}
   - {fileID: 1742949096}
   - {fileID: 176695252}
+  particleSystem: {fileID: 1455079168}
   frequencyFocusWindow: 16
   amplification: 512
   baseHeight: 0.0625
   fftWindow: 1
   useDecibels: 0
+  particleFrequencyMin: 80
+  particleFrequencyMax: 2000
+  particleAmplitudeThreshold: 0.01
+  particleBurstCount: 20
+  particleBurstCooldown: 0.15
   spectrumData: []
 --- !u!82 &1751572609
 AudioSource:

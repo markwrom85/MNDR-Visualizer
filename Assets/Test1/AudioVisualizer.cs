@@ -5,6 +5,7 @@ public class AudioVisualizer : MonoBehaviour
     [Header("References")]
     public AudioSource audioSource;
     public Transform[] bars;
+    public ParticleSystem particleSystem;
 
     [Header("Settings")]
     public FrequencyFocusWindow frequencyFocusWindow;
@@ -46,6 +47,13 @@ public class AudioVisualizer : MonoBehaviour
                 scale.y = sum * amplification + baseHeight;
             }
             bars[i].localScale = scale;
+
+            // Update particle system emission rate based on the average amplitude of the bars
+            if (particleSystem != null)
+            {
+                var emission = particleSystem.emission;
+                emission.rateOverTime = Mathf.Clamp(sum * amplification * 100, 0, 1000); // Adjust the multiplier as needed for desired effect
+            }
         }
     }
 }
