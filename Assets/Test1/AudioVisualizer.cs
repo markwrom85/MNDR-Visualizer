@@ -5,7 +5,7 @@ public class AudioVisualizer : MonoBehaviour
     [Header("References")]
     public AudioSource audioSource;
     public Transform[] bars;
-    public ParticleSystem particleSystem;
+    public ParticleSystem[] particleSystems;
 
     [Header("Settings")]
     public FrequencyFocusWindow frequencyFocusWindow;
@@ -14,8 +14,17 @@ public class AudioVisualizer : MonoBehaviour
     public FFTWindow fftWindow; // Determines how audio is smoothened
     public bool useDecibels;
 
+    [Header("Particle Burst")]
+    // These values control particle bursts independently from the bar amplification.
+    public float particleBurstThreshold = 0.01f;
+    public float particleBurstSensitivity = 1.5f;
+    public float particleBurstCooldown = 0.1f;
+    public int particleBurstCount = 20;
+
     [Header("State")]
     public float[] spectrumData;
+    private float previousAudioLevel;
+    private float nextParticleBurstTime;
 
     void Awake()
     {
@@ -47,14 +56,41 @@ public class AudioVisualizer : MonoBehaviour
                 scale.y = sum * amplification + baseHeight;
             }
             bars[i].localScale = scale;
-
-            // Update particle system emission rate based on the average amplitude of the bars
-            if (particleSystem != null)
-            {
-                var emission = particleSystem.emission;
-                emission.rateOverTime = Mathf.Clamp(sum * amplification * 100, 0, 1000); // Adjust the multiplier as needed for desired effect
-            }
         }
+
+        // Check the raw spectrum data for a new audio peak. This does not use amplification.
+        UpdateParticleBurst(blockSize);
+    }
+
+    private void UpdateParticleBurst(int blockSize)
+    {
+        if (particleSystems == null || particleSystems.Length == 0)
+        {
+            return;
+        }
+
+        // Average the focused spectrum bins to get one audio level for the burst detector.
+        float audioLevel = 0f;
+        int focusedBinCount = blockSize * bars.Length;
+        for (int i = 0; i < focusedBinCount; i++)
+        {
+            audioLevel += spectrumData[i];
+        }
+        audioLevel /= focusedBinCount;
+
+        // A burst requires both a minimum level and a rise from the previous frame.
+        bool isAudioPeak = audioLevel >= particleBurstThreshold &&
+                           audioLevel >= previousAudioLevel * particleBurstSensitivity;
+        if (isAudioPeak && Time.time >= nextParticleBurstTime)
+        {
+            for (int i = 0; i < particleSystems.Length; i++)
+            {
+                particleSystems[i].Emit(particleBurstCount);
+            }
+            nextParticleBurstTime = Time.time + particleBurstCooldown;
+        }
+
+        previousAudioLevel = audioLevel;
     }
 }
 
